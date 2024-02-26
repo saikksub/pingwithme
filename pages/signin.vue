@@ -1,30 +1,18 @@
 <template>
-    <div class="space-y-3">
-      <h3 class="text-2xl font-bold">SignIn Page</h3>
-  
+    <div class="space-y-4 mx-[200px] my-[300px] space-y-2 rounded-md">
+      <h3>Pingwithme</h3>
+      <h1 class="font-bold text-2xl">Sign In</h1>
       
-      <UInput type="text" placeholder="Enter a valid email address" />
+      <UInput type="text" placeholder="Email" />
+      <UInput type="text" placeholder="Password" />
       
-      <UInput type="text" placeholder="Enter your password"/>
-  
-      <div class="grid justify-end">
-        <router-link to="/forgot-password">
-          <UButton
-            color="white"
-            variant="ghost"
-            label="Forgot Password"
-            class="font-bold rounded"
-          />
-        </router-link>
+      <div>
+        <UButton class="text-black font-bold">Sign In</UButton>
       </div>
-  
-      <div class="grid justify-center">
-        <UButton class="text-black font-bold w-full">Sign In</UButton>
-      </div>
-      <div class="text-center">
+      <div>
         <router-link to="/signup">
-          <UButton label=" Don't you have an account? Sign Up" variant="ghost" color="white" 
-          class="font-bold "/></router-link>
+          <UButton label=" Don't you have an account? Sign Up" variant="block" color="white" 
+          class="font-bold bg-green-950 px-[10px] py-[8px] text-green-400"/></router-link>
       </div>
     </div>
   </template>

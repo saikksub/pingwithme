@@ -1,17 +1,23 @@
 <template>
-    <div class="space-y-3">
-      <h2 class="text-2xl font-bold">Password Recovery Page</h2>
+    <div class="space-y-4 mx-[200px] my-[300px] space-y-2 rounded-md">
+      <h3>Pingwithme</h3>
+      <h1 class="font-bold text-2xl">Reset your password</h1>
       <UInput
         v-model="email"
         type="text"
-        placeholder="Enter your email to recover the password"
+        placeholder="Email"
       />
-      <div v-if="!showMessage" class="grid justify-center ">
-      <UButton color="bg-blue-300"
-           class="px-4 py-2 rounded-md bg-blue-300"
+      <div v-if="!showMessage">
+      <UButton 
+           class="px-4 py-2 rounded-md bg-green-400 font-bold"
           @click="sendResetLink"
-          label="Send Reset Password Link"/>
-  </div>
+          label="Submit"/>
+        </div>
+        <div>
+        <router-link to="/signin">
+          <UButton label="Back to sign in" variant="block" color="white"
+          class="font-bold bg-green-950 px-[10px] py-[8px] text-green-400"/></router-link>
+      </div>
   
       <div
         v-if="showMessage"
