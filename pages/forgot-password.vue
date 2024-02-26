@@ -40,13 +40,21 @@
   const showMessage = ref(false);
   
   const sendResetLink = () => {
+    console.log(email.value)
+    if(email.value === ""){
+      alert("fill the email")
+    }else{
     setTimeout(() => {
       showMessage.value = true;
     });
+  }
   };
   
   const hideMessage = () => {
     showMessage.value = false;
     return { email, showMessage, sendResetLink, hideMessage };
-  };
+    }
+   definePageMeta({
+  layout:'auth'
+})
   </script>
