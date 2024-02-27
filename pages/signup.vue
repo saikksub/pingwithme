@@ -1,57 +1,52 @@
 <template>
-    <div class="space-y-2">
-      <h1 class="font-bold text-green-400">Signup Page</h1>
+    <div class="space-y-4 mx-[200px] my-[300px] space-y-2 rounded-md">
+      <h3>Pingwithme</h3>
+      <h1 class="font-bold text-2xl">Sign Up</h1>
       <UForm  class="space-y-4">
         <div
-          class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
-        >
+          class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
           <div>
-            First Name:
+            
             <UInput
               type="text"
-              placeholder="Enter your first name"
+              placeholder="First Name"
               v-model="firstName"
             />
             <div class="text-red-500">{{ errors.firstName }}</div>
           </div>
           <div>
-            Last Name:
             <UInput
               type="text"
-              placeholder="Enter your last name"
+              placeholder="Last Name"
               v-model="lastName"
             />
             <div class="text-red-500">{{ errors.lastName }}</div>
           </div>
         </div>
         <div class="space-y-6">
-          Email Id:
           <UInput
             type="text"
-            placeholder="Enter your valid email id"
+            placeholder="Email"
             v-model="email"
           />
           <div class="text-red-500">{{ errors.email }}</div>
         </div>
-        <div
-          class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
-        >
+        <div>
           <div>
-            New Password:
-            <UInput type="password" v-model="password" />
+            <UInput type="password" v-model="password" placeholder="Password"/>
             <div class="text-red-500">{{ errors.password }}</div>
-          </div>
-          <div>
-            Retype Password:
-            <UInput type="password" v-model="retypePassword" />
-            <div class="text-red-500">{{ errors.retypePassword }}</div>
           </div>
         </div>
        
       </UForm>
-      <div class="grid justify-center">
-          <UButton @click="submitForm" label="Create Account" />
+      <div>
+          <UButton class="font-bold px-[10px] py-[8px]" @click="submitForm" label="Create Account" />
         </div>
+        <div>
+        <router-link to="/signin">
+          <UButton label=" Already have an account? Sign In" variant="block" color="white"
+          class="font-bold bg-green-950 px-[10px] py-[8px] text-green-400"/></router-link>
+      </div>
       <div v-if="showMessage" class="message-box bg-pink-100 border border-pink-400 text-pink-700 px-4 py-2 rounded-md  flex justify-center">
         Your account has been created successfully.Redirecting to signin page...
    </div>
