@@ -58,8 +58,8 @@
   </div>
   </template>
   <script setup>
-  import { ref } from "vue";
-  import { useForm } from "vee-validate";
+  import { ref, computed } from "vue";
+  import { useField, useForm } from "vee-validate";
   import * as yup from "yup";
   import { useRouter } from "vue-router";
   const { errors, handleSubmit, defineField } = useForm({
@@ -100,7 +100,4 @@
       showMessage,
     };
   });
-  definePageMeta({
-  layout:'auth'
-})
   </script>
