@@ -18,7 +18,6 @@
           class="font-bold bg-green-950 px-[10px] py-[8px] text-green-400"
       /></router-link>
     </div>
-
     <div
       v-if="showMessage"
       class="message-box bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-md"
@@ -47,6 +46,10 @@ const email = ref("");
 const showMessage = ref(false);
 
 const sendResetLink = () => {
+  if (!email.value) {
+    return;
+  }
+
   setTimeout(() => {
     showMessage.value = true;
   });

@@ -1,6 +1,7 @@
 <template>
   <div class="space-y-4">
     <h1 class="font-bold text-2xl">Sign Up</h1>
+    <button @click="test">click</button>
     <UForm class="space-y-4">
       <div
         class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
@@ -39,17 +40,20 @@
     </div>
     <div
       v-if="showMessage"
-      class="message-box bg-blue-100 border border-blue-400 text-blue-700 px-4 py-2 rounded-md flex justify-center"
+      class="message-box bg-blue-100 border border-blue-400 text-blue-900 px-4 py-2 rounded-md flex justify-center"
     >
-      Your account has been created successfully.Redirecting to signin page...
+      Your account has been created successfully!...
     </div>
   </div>
 </template>
 <script setup>
-import { ref, computed } from "vue";
-import { useField, useForm } from "vee-validate";
+import { ref } from "vue";
+import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { useRouter } from "vue-router";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Firestore } from "firebase/firestore";
+
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
     firstName: yup.string().required("first Name is required"),
@@ -71,12 +75,32 @@ const submitForm = handleSubmit(async (values) => {
   console.log("Form submitted:", values);
   showMessage.value = true;
 
+  const auth = getAuth();
+  console.log(auth);
+  createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then((userCredential) => {
+      console.log(userCredential);
+      // Signed up
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(error);
+      console.error(
+        "Firebase Authentication Error:",
+        error.code,
+        error.message
+      );
+      // ..
+    });
+
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   showMessage.value = false;
 
-  // Redirect to '/signin'
-  router.push("/signin");
+  router.push("/home");
   return {
     submitForm,
     showMessage,
