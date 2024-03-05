@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <h1 class="font-bold text-2xl">Sign Up</h1>
-    <button @click="test">click</button>
+    <button @click="test"></button>
     <UForm class="space-y-4">
       <div
         class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
@@ -52,7 +52,6 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { useRouter } from "vue-router";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { Firestore } from "firebase/firestore";
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
@@ -79,21 +78,11 @@ const submitForm = handleSubmit(async (values) => {
   console.log(auth);
   createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
-      console.log(userCredential);
-      // Signed up
       const user = userCredential.user;
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.error(error);
-      console.error(
-        "Firebase Authentication Error:",
-        error.code,
-        error.message
-      );
-      // ..
     });
 
   await new Promise((resolve) => setTimeout(resolve, 2000));

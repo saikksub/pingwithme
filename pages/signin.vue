@@ -48,13 +48,10 @@ const signinForm = handleSubmit(async (values) => {
       values.email,
       values.password
     );
-
-    console.log(response);
     router.push("/home");
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
-    console.error(error);
   }
 });
 </script>
