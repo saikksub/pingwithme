@@ -3,9 +3,7 @@
     <h1 class="font-bold text-2xl">Sign Up</h1>
     <button @click="test"></button>
     <UForm class="space-y-4">
-      <div
-        class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
-      >
+      <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
         <div>
           <UInput type="text" placeholder="First Name" v-model="firstName" />
           <div class="text-red-500">{{ errors.firstName }}</div>
@@ -36,7 +34,7 @@
           variant="block"
           color="white"
           class="font-bold bg-green-950 px-[10px] py-[8px] text-green-400"
-      /></router-link>
+        /></router-link>
     </div>
     <div
       v-if="showMessage"
@@ -46,12 +44,14 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { useRouter } from "vue-router";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, addDoc, collection } from "firebase/firestore";
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
@@ -61,38 +61,52 @@ const { errors, handleSubmit, defineField } = useForm({
     password: yup.string().min(6).required("enter a valid password"),
   }),
 });
-const router = useRouter();
 
+const router = useRouter();
 const [firstName] = defineField("firstName");
 const [lastName] = defineField("lastName");
 const [email] = defineField("email");
 const [password] = defineField("password");
-
 const showMessage = ref(false);
 
 const submitForm = handleSubmit(async (values) => {
   console.log("Form submitted:", values);
   showMessage.value = true;
-
   const auth = getAuth();
   console.log(auth);
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((userCredential) => {
-      const user = userCredential.user;
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+    const user = userCredential.user;
+    const userData = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+    };
+
+    await addUserDataToFirestore(userData);
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error("Error creating user:", errorMessage);
+  }
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
-
   showMessage.value = false;
-
   router.push("/home");
-  return {
-    submitForm,
-    showMessage,
-  };
 });
+
+const addUserDataToFirestore = async (userData) => {
+  try {
+    const usersCollection = collection(getFirestore(), "users");
+    const docRef = await addDoc(usersCollection, userData);
+    console.log("User document added with ID:", docRef.id);
+  } catch (error) {
+    console.error("Error adding user document:", error);
+  }
+};
 </script>
