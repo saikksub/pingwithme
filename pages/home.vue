@@ -1,5 +1,6 @@
 <template>
   <div class="font-bold text-center text-4xl">Welcome to Home Page!</div>
+  <!-- <QuillEditor /> -->
   <div class="font-bold text-center text-4xl">
     <router-link to="/signin">
       <UButton
