@@ -28,7 +28,6 @@
 <script setup>
 import { useForm } from "vee-validate";
 import * as yup from "yup";
-import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const { errors, handleSubmit, defineField } = useForm({

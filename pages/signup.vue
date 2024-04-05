@@ -87,7 +87,7 @@ const submitForm = handleSubmit(async (values) => {
       lastName: lastName.value,
       email: email.value,
     };
-
+    console.log(userData)
     await addUserDataToFirestore(userData);
   } catch (error) {
     const errorCode = error.code;
