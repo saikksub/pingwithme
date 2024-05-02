@@ -53,6 +53,10 @@ import { useRouter } from "vue-router";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, addDoc, collection } from "firebase/firestore";
 
+
+definePageMeta({
+  layout: 'app'
+})
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
     firstName: yup.string().required("first Name is required"),

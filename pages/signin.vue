@@ -9,10 +9,15 @@
       <UInput type="password" placeholder="Password" v-model="password" />
       <div class="text-red-500">{{ errors.password }}</div>
     </div>
-    <div>
-      <UButton class="text-black font-bold" @click="signinForm"
-        >Sign In</UButton
-      >
+    <div class="flex justify-between">
+      <UButton class="text-black font-bold">Sign In</UButton>
+      <router-link to="/forgot-password">
+        <UButton
+          label="forgot-password?"
+          variant="ghost"
+          color="red"
+          class="text-capitalize text-red-500"
+      /></router-link>
     </div>
     <div>
       <router-link to="/signup">
@@ -41,6 +46,10 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
+
+definePageMeta({
+  layout: 'app'
+})
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
     email: yup.string().email().required("enter a valid email"),

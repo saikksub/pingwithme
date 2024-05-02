@@ -11,15 +11,16 @@
           <UInput v-model="lastName" placeholder="Last Name" class="flex-1"/>
         </div>
         <!-- Description Textarea -->
-        <quill v-model="description" class="mb-5" />
-        <UTextarea v-model="description" placeholder="Additional notes" class="w-full"/>
+        <ClientOnly>
+          <QuillEditor toolbar="full" v-model:content="description" content-type="html"></QuillEditor>
+        </ClientOnly>
         <!-- Dynamic Flex Boxes for Different Sections -->
         <div v-if="showFlexBoxes" class="mt-4">
           <div v-for="(box, index) in flexBoxes" :key="index" class="p-4 rounded my-2">
             <h3>{{ box.title }}</h3>
             <div class="flex flex-wrap gap-4 mb-2" v-for="(field, fIndex) in box.fields" :key="fIndex">
               <UInput v-model="field.value" :placeholder="field.placeholder" class="flex-grow" />
-              <<UButton @click="deleteField(index, fIndex)" class="ml-auto">
+              <UButton @click="deleteField(index, fIndex)" class="ml-auto">
                 delete
               </UButton>
             </div>
@@ -63,7 +64,11 @@
 </template>
 <script setup>
 import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { QuillEditor } from "@vueup/vue-quill"
 
+definePageMeta({
+  middleware: 'auth'
+})
 const firstName = ref('')
 const lastName = ref('')
 const description = ref('')
@@ -88,7 +93,7 @@ const addFlexBox = (event) => {
 const deleteField = (boxIndex, fieldIndex) => {
   flexBoxes.value[boxIndex].fields.splice(fieldIndex, 1);
   if (flexBoxes.value[boxIndex].fields.length === 0) {
-    flexBoxes.value.splice(boxIndex, 1); // Remove the whole box if no fields are left
+    flexBoxes.value.splice(boxIndex, 1); 
   }
 };
 const addSocialMediaLink = (index) => {
@@ -170,12 +175,13 @@ async function handleSubmit() {
   const usersCollection = collection(getFirestore(), "users");
   try{  
   const docRef = await addDoc(usersCollection, data);
+  const dataString = docRef.id
+  router.push({ path: '/QrCode', query: { data: `users/${dataString}`} });
     console.log("User document added with ID:", docRef.id);
   } catch (error) {
     console.error("Error adding user document:", error);
   }
-  let dataString = JSON.stringify(data);
-  router.push({ path: '/QrCode', query: { data: dataString } });
+  
 }
 </script>
 

@@ -35,6 +35,9 @@
 import { ref } from "vue";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
+definePageMeta({
+  layout: 'app'
+})
 const email = ref("");
 const showMessage = ref(false);
 
