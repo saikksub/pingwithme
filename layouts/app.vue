@@ -2,7 +2,7 @@
     <div class="flex flex-col min-h-screen">
 
         <div class="flex-grow p-12 flex items-center justify-start md:justify-center md:items-center">
-            <UCard class="w-full max-w-sm">
+            <UCard class="w-full max-w-md">
                 <template #header>
                     <h1 class="text-sm">Pingwithme</h1>
                 </template>

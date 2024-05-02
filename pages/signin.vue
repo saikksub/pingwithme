@@ -3,14 +3,12 @@
     <h1 class="font-bold text-2xl">Sign In</h1>
     <div>
       <UInput type="text" placeholder="Email" v-model="email" />
-      <div class="text-red-500">{{ errors.email }}</div>
     </div>
     <div>
       <UInput type="password" placeholder="Password" v-model="password" />
-      <div class="text-red-500">{{ errors.password }}</div>
     </div>
     <div class="flex justify-between">
-      <UButton class="text-black font-bold">Sign In</UButton>
+      <UButton class="text-black font-bold" @click="signIn">Sign In</UButton>
       <router-link to="/forgot-password">
         <UButton
           label="forgot-password?"
@@ -29,6 +27,7 @@
       /></router-link>
     </div>
   </UForm>
+  <p v-if="errorMessage" class="text-red-500 text-center">{{ errorMessage }}</p>
   <div class="mt-6 grid grid-cols-1 gap-4" @click="userSigninWithGoogle">
             <a href="#" class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent">
               <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
@@ -42,37 +41,33 @@
           </div>
 </template>
 <script setup>
-import { useForm } from "vee-validate";
-import * as yup from "yup";
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
 definePageMeta({
   layout: 'app'
 })
-const { errors, handleSubmit, defineField } = useForm({
-  validationSchema: yup.object({
-    email: yup.string().email().required("enter a valid email"),
-    password: yup.string().required("enter a valid password"),
-  }),
-});
+const email = ref('')
+const password = ref('')
 const router = useRouter();
-const [email] = defineField("email");
-const [password] = defineField("password");
+const errorMessage = ref('')
 
-const signinForm = handleSubmit(async (values) => {
-  try {
-    const response = await signInWithEmailAndPassword(
-      getAuth(),
-      values.email,
-      values.password
-    );
-    router.push("/home");
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+const signIn = async function () {
+  if (!email.value || !password.value) {
+    console.error('Email or password is undefined');
+    return false;
   }
-});
+
+  try {
+    const signInRes = await signInWithEmailAndPassword(getAuth(),email.value, password.value);
+    router.replace('/home'); 
+    return true;
+  } catch (err) {
+    console.error('Sign in failed:', err);
+    errorMessage.value = err.message;
+    return false;
+  }
+};
 
 const userSigninWithGoogle = async function () {
 try {

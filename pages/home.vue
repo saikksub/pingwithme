@@ -161,7 +161,6 @@ const fieldsByOption = {
 };
 
 async function handleSubmit() {
-  console.log('hello')
   let data = {
     firstName: firstName.value,
     lastName: lastName.value,
